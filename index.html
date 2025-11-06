@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>治愈系弹窗 </title>
+    <script>
+       // 500条治愈话语（含阳光鲜花类表情，每条最多重复2次） 
+        const messages = [
+            "快立冬了，天冷记得要多穿衣服哦❄️",
+            "这几天会变热，但也别穿太少🌻",
+            "再过一段时间会降温，记得多看天气预报💐",
+            "下一轮换季别感冒，我懂换季生病的痛☀️",
+            "有烦恼可以跟我说，别自己一个人内耗✨",
+            "事情好多的话，不要晚睡哦🌸",
+            "给自己多一些时间，不要老是参加那些没什么用的事啦🌼",
+            "每天早上起来都要喝一杯温水哦☕",
+            "睡不着也要早些睡，也可以找我聊天🌙",
+            "心情烦闷的时候可以找我，直接先给你点一杯奶茶🧋",
+            "你走的每一步，都是在成为很好的曾慧琪🚶",
+            "下雨天可以躲进被窝追追剧哦🌧️",
+            "网王好好看，不知道看什么可以来看这个哦☁️",
+            "点外卖尽量点食堂的哦，外面的可能不卫生🍜",
+            "月亮不圆也很美，你也是🌕",
+            "在大学要学会拒绝哦，要先考虑自己呀🎧",
+            "太累了当只小猫咪打盹也不错(•̀ᴗ•́)و̑̑🐱",
+            "闺蜜诡秘闺蜜诡秘闺蜜诡秘闺蜜诡秘",
+            "曾慧琪！ 曾慧琪！ 曾慧琪！ 曾慧琪！ 曾慧琪！💨",
+            "不开心的时候可以找我，把烦恼折成纸飞机✈️",
+            "诡秘我想回家了💡",
+            "嘴馋了就去买好吃的，我们会骑大帝不能亏待自己！🍰",
+            "小喇叭！ 小喇叭！ 小喇叭！ 小喇叭！小喇叭！🌈",
+            "你比自己想象中，更勇敢一点点哦💪",
+            "夜晚无聊时，我可以给你发片看哦👀🌟",
+            "闺蜜我们福建啥时候能看到雪呢⛄",
+            "慢慢走，沿途有很多小美好在等你🌸",
+            "喝杯热茶吧，让温暖从胃传到心里🍵",
+            "今天的你，也在好好生活呀👍",
+            "风会带走烦恼，留下温柔给你🌬️",
+            "你的存在，本身就是一件美好的事✨",
+            "阳光会落在你身上，你也会快乐一场☀️",
+            "诡秘累了就停下来，抱抱自己再出发🫂",
+            "你见过流星吗会骑，在你没看见的时候，流星也在悄悄为你许愿哦🌠",
+            "冬天多出来晒太阳哦诡秘☀️",
+            "无聊想看玄幻小说给我去看斗3诡秘！",
+            "我字打得好累啊诡秘，不过是你的话还能坚持😣",
+            "把把开大金，魔芋玉佩雪莲吃到爽！",      
+            "曾慧琪！少在游戏里充钱！对自己要好一点！",
+            "诡秘累了给自己放个假，不用一直追赶⏸️",
+            "你值得被温柔对待，包括自己❤️",
+            "闺蜜闺蜜，不要一直玩游戏啦，现在每天都没你消息",
+            "诡秘回消息能秒回吗，我最喜欢秒回我的人了🌊",
+            "曾慧琪天天开心！🌟",
+            "吃颗糖吧，生活有点甜🍬",
+            "今天的你，也辛苦了💦",
+            "节假日多出去玩玩，放松下自己📢🌸",
+            "抬头看看天，烦恼会变轻☁️",
+            "来福州的话我带你去玩哦😊",
+            "洗个热水澡，洗去一天的疲惫🛁",
+            "明天又是新的一天，有新的希望🌞",
+            "早八的水课好困诡秘😪",
+            "你不需要很完美，做自己就好💖",
+            "诡秘其实你也是个小太阳哦☀️",
+            "听首轻音乐，让心情慢慢沉淀🎶",
+            "今天做了一件小事，也很棒呀👏",
+            "诡秘钱别乱花，要存着请我喝奶茶😏",
+            "把烦恼写在纸上，然后撕掉它📜",
+            "你走的路，每一步都算数哦🚶‍♀️",
+            "今年新桥又有舞龙🐉哦，你要来看吗",
+            "你那里开迎新晚会了吗，我这还没有呢",
+            "可恶我为什么要答应你！",
+            "以前感觉你像只小猫🐈？",
+            "累了就睡一觉，世界不会塌下来😴",
+            "天冷要记得拿保温杯接热水喝哦🌬️",
+            "你那里有🐱学长，🐶学长吗，我这里有但就是很少遇到😟🌟",
+            "扣1请你喝奶茶☕",
+            "和朋友聊聊天，烦恼会减半👥",
+            "诡秘你知道我大学还要学数学的痛苦吗🍂",
+            "你值得所有美好的东西哦💎",
+            "不敢想周末外面下着雨，我在床上躺着追剧慢慢睡着的幸福感🌧️",
+            "昨晚好像有满月诶，我忘记看了🌙",
+            "你笑起来世界都会变亮哦",
+            "诡秘你留长发会是啥样的嘞✨",
+            "闺蜜你别变成🐷了，算了傻🐷也不错⏱️",
+            "诡秘我词穷了🌳",
+            "闺蜜看到好康的要拍照发给我哦🌇",
+            "星迟！ 星迟！ 星迟！ 星迟！ 星迟！ 星迟！",
+            "曾慧琪快来帮我校园跑！💪",
+            "诡秘你冬天会穿成🐷晒太阳吗☀️",
+            "想你了诡秘🌸",
+            "诡秘你会飞机入睡法吗🥛",
+            "诡秘你会做好吃的吗！🍳",
+            "看片吗！曾慧琪🌿",
+            "今天的你，也很可爱呀😊",
+            "扣1发片🌟",
+            "感情淡了，闺蜜😭🌬️",
+            "我想老家的美食了😭😭😭福州这里根本没有美食💥",
+            "今天的午饭是猪脚饭🥰🥰🥰",
+            "今天的早餐是烧麦和水饺(全是预制的😓)",
+            "一个人的大学好无趣啊🥺",
+            "诡秘我想起之前看你妈抖音的时候了😉",
+            "累了就休息，不是偷懒😴",
+            "今天的你，很🐮",
+            "你的努力，会被看见哦💫",
+            "听首老歌，回忆也是甜的🎶",
+            "不行了诡秘，11点半了好饿，下午在继续吧🤒",
+            "来福州这么久了都没出去玩过，诡秘你呢❄️",
+            "把烦恼交给风，它会带走的哟🌬️",
+            "你的笑容，是最好的治愈剂😊",
+            "我去我今天才发现卫裤穿起来是真的舒服啊诡秘💦",
+            "曾慧琪🌟",
+            "曾慧琪😊",
+            "曾慧琪🍲",
+            "曾慧琪💨",
+            "曾慧琪☁️",
+            "曾慧琪⏱️",
+            "曾慧琪🌱",
+            "曾慧琪🌆",
+            "曾慧琪📚",
+            "曾慧琪💖",
+            "曾慧琪☀️",
+            "曾慧琪🐱",
+            "曾慧琪🚶",
+            "会骑☁️",
+            "会骑⏳",
+            "会骑🎤",
+            "会骑🌸",
+            "会骑🥛",
+            "会骑🍲",
+            "会骑🌿",
+            "会骑😊",
+            "会骑🌟",
+            "会骑🌬️",
+            "会骑💪",
+            "会骑🌈",
+            "会骑☀️",
+            "会骑📚",
+            "小喇叭❤️",
+            "小喇叭💐",
+            "小喇叭🔋",
+            "小喇叭🌙",
+            "小喇叭💫",
+            "小喇叭🍓",
+            "小喇叭🍂",
+            "小喇叭💖",
+            "星迟☀️",
+            "星迟🎶",
+            "星迟👍",
+            "星迟❄️",
+            "星迟🌬️",
+            "星迟😊",
+            "星迟🍵",
+            "星迟🌞",
+            "关你西红柿💐",
+            "关你西红柿🚶",
+            "关你西红柿🌧️",
+            "关你西红柿🫂",
+            "关你西红柿🌟",
+            "闺蜜🍰",
+            "诡秘💖",
+            "闺蜜💦",
+            "诡秘🌙",
+            "闺蜜⏳",
+            "诡秘🌬️",
+            "闺蜜👀",
+            "诡秘☀️",  
+            "曾慧琪天天开心🌼",
+            "曾慧琪天天开心✨",
+            "曾慧琪天天开心🎁",
+            "曾慧琪天天开心🎊",
+            "曾慧琪天天开心☃️",
+            "曾慧琪天天开心⛄",
+            "曾慧琪天天开心🍟",
+            "曾慧琪天天开心🍕",
+            "曾慧琪天天开心🍗",
+            "曾慧琪天天开心🍪",
+            "曾慧琪天天开心🍩",
+            "曾慧琪天天开心🍰",
+            "曾慧琪天天开心🍣",
+            "曾慧琪天天开心🍲",
+            "曾慧琪天天开心🍯",
+            "曾慧琪天天开心🥨",
+            "曾慧琪天天开心🌼",
+            "曾慧琪天天开心✨",
+            "曾慧琪天天开心🎁",
+            "曾慧琪天天开心🎊",
+            "曾慧琪天天开心☃️",
+            "曾慧琪天天开心⛄",
+            "曾慧琪天天开心🍟",
+            "曾慧琪天天开心🍕",
+            "曾慧琪天天开心🍗",
+            "曾慧琪天天开心🍪",
+            "曾慧琪天天开心🍩",
+            "曾慧琪天天开心🍰",
+            "曾慧琪天天开心🍣",
+            "曾慧琪天天开心🍲",
+            "曾慧琪天天开心🍯",
+            "曾慧琪天天开心🥨",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   ];
+
+        // 马卡龙色系弹窗（保持不变）
+        const colors = [
+            "#FFEEEE", "#EEFFEE", "#EEEEFF", "#FFF8E1", "#E8F5E9",
+            "#FFECB3", "#C8E6C9", "#BBDEFB", "#C5CAE9", "#D1C4E9",
+            "#F8BBD0", "#FFCDD2", "#B2EBF2", "#FFE0B2", "#E0F7FA",
+            "#F3E5F5", "#FBE9E7", "#E6F7FF", "#FFF3E0", "#F0F4C3"
+        ];
+
+        // 动画配置（保持不变）
+        const animationConfig = {
+            duration: 1200,
+            timingFunction: 'linear',
+            exitDuration: 1000
+        };
+
+        // 弹窗函数（增大尺寸）
+        function showMessage(timingOffset = 0) {
+            const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            const popup = document.createElement("div");
+            popup.style.position = "fixed";
+            popup.style.padding = "28px 36px";
+            popup.style.borderRadius = "12px";
+            popup.style.boxShadow = "0 3px 15px rgba(0,0,0,0.12)";
+            popup.style.backgroundColor = randomColor;
+            popup.style.color = "#333";
+            popup.style.fontSize = "22px";
+            popup.style.fontFamily = "Microsoft YaHei, 微软雅黑, PingFang SC, sans-serif";
+            popup.style.zIndex = "1000";
+            popup.style.maxWidth = "380px";
+            popup.style.textAlign = "center";
+            popup.style.wordBreak = "break-word";
+            popup.innerText = randomMsg;
+            
+            popup.style.opacity = "0";
+            popup.style.transform = "scale(0.8)";
+            popup.style.transition = `all ${animationConfig.duration}ms ${animationConfig.timingFunction} ${timingOffset}ms`;
+            
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            
+            let left;
+            const random = Math.random();
+            if (random < 0.35) {
+                left = windowWidth * 0.2 + Math.random() * windowWidth * 0.2;
+            } else if (random < 0.7) {
+                left = windowWidth * 0.6 + Math.random() * windowWidth * 0.2;
+            } else {
+                left = windowWidth * 0.4 + Math.random() * windowWidth * 0.2;
+            }
+            
+            const top = windowHeight * 0.1 + Math.random() * windowHeight * 0.8;
+            popup.style.left = `${left - 190}px`;
+            popup.style.top = `${top - 65}px`;
+            
+            document.body.appendChild(popup);
+            
+            setTimeout(() => {
+                popup.style.opacity = "1";
+                popup.style.transform = "scale(1)";
+            }, 50);
+            
+            setTimeout(() => {
+                popup.style.opacity = "0";
+                popup.style.transform = "scale(0.8)";
+                setTimeout(() => popup.remove(), animationConfig.exitDuration);
+            }, 18000);
+        }
+
+        // 小黄鸭播放器核心功能
+        function initDuckPlayer() {
+            // 创建音频元素
+            const audio = document.createElement('audio');
+            audio.id = 'healingMusic';
+            audio.loop = true; // 循环播放
+            audio.volume = 0.4; // 默认音量40%
+            audio.preload = 'auto';
+
+            // 音频链接
+            const audioUrl = "https://uy.wzznft.com/i/2025/11/06/w55c7l.mp3";
+
+            const source = document.createElement('source');
+            source.src = audioUrl;
+            source.type = 'audio/mpeg';
+            audio.appendChild(source);
+            document.body.appendChild(audio);
+
+            // 创建播放器容器（马卡龙蓝底色）
+            const playerContainer = document.createElement('div');
+            playerContainer.style.position = 'fixed';
+            playerContainer.style.bottom = '30px';
+            playerContainer.style.left = '50%';
+            playerContainer.style.transform = 'translateX(-50%)';
+            playerContainer.style.display = 'flex';
+            playerContainer.style.alignItems = 'center';
+            playerContainer.style.gap = '15px';
+            playerContainer.style.padding = '12px 25px';
+            playerContainer.style.backgroundColor = '#BBDEFB'; // 马卡龙蓝
+            playerContainer.style.borderRadius = '50px';
+            playerContainer.style.boxShadow = '0 4px 18px rgba(0,0,0,0.15)';
+            playerContainer.style.zIndex = '1001';
+            playerContainer.style.cursor = 'pointer';
+
+            // 小黄鸭图标（动态摇摆）
+            const duckIcon = document.createElement('div');
+            duckIcon.style.fontSize = '40px';
+            duckIcon.innerText = '🐥';
+            duckIcon.style.animation = 'duckSwing 2s infinite ease-in-out';
+            playerContainer.appendChild(duckIcon);
+
+            // 播放/暂停按钮（马卡龙粉）
+            const controlBtn = document.createElement('button');
+            controlBtn.innerText = '播放音乐';
+            controlBtn.style.border = 'none';
+            controlBtn.style.padding = '8px 20px';
+            controlBtn.style.borderRadius = '30px';
+            controlBtn.style.backgroundColor = '#FFCDD2'; // 马卡龙粉
+            controlBtn.style.color = '#333';
+            controlBtn.style.fontSize = '16px';
+            controlBtn.style.fontWeight = 'bold';
+            controlBtn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+            controlBtn.style.cursor = 'pointer';
+            controlBtn.style.transition = 'all 0.3s ease';
+            playerContainer.appendChild(controlBtn);
+
+            // 音量调节滑块（马卡龙黄）
+            const volumeSlider = document.createElement('input');
+            volumeSlider.type = 'range';
+            volumeSlider.min = '0';
+            volumeSlider.max = '1';
+            volumeSlider.step = '0.1';
+            volumeSlider.value = '0.4';
+            volumeSlider.style.width = '80px';
+            volumeSlider.style.height = '6px';
+            volumeSlider.style.borderRadius = '3px';
+            volumeSlider.style.backgroundColor = '#FFECB3'; // 马卡龙黄
+            volumeSlider.style.outline = 'none';
+            volumeSlider.style.appearance = 'none';
+            // 滑块样式优化
+            volumeSlider.style.webkitAppearance = 'none';
+            volumeSlider.oninput = function() {
+                audio.volume = this.value;
+            };
+            playerContainer.appendChild(volumeSlider);
+
+            // 播放器交互逻辑
+            controlBtn.addEventListener('click', function() {
+                if (audio.paused) {
+                    audio.play().catch(e => {
+                        alert('✨ 请点击允许播放音乐，开启治愈时光～');
+                    });
+                    this.innerText = '暂停音乐';
+                    duckIcon.style.animation = 'duckSwing 1s infinite ease-in-out'; // 播放时加速摇摆
+                } else {
+                    audio.pause();
+                    this.innerText = '播放音乐';
+                    duckIcon.style.animation = 'duckSwing 2s infinite ease-in-out'; // 暂停时减速摇摆
+                }
+            });
+
+            // 点击播放器整体也能控制播放/暂停
+            playerContainer.addEventListener('click', function(e) {
+                if (e.target !== controlBtn && e.target !== volumeSlider) {
+                    controlBtn.click();
+                }
+            });
+
+            // 添加摇摆动画样式
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes duckSwing {
+                    0% { transform: rotate(-5deg); }
+                    50% { transform: rotate(5deg); }
+                    100% { transform: rotate(-5deg); }
+                }
+                button:hover {
+                    transform: scale(1.05);
+                    background-color: #F8BBD0 !important;
+                }
+                input[type="range"]::-webkit-slider-thumb {
+                    -webkit-appearance: none;
+                    width: 16px;
+                    height: 16px;
+                    border-radius: 50%;
+                    background: #FF9EBB;
+                    cursor: pointer;
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+                }
+            `;
+            document.head.appendChild(style);
+
+            document.body.appendChild(playerContainer);
+        }
+
+        // 页面加载初始化
+        window.onload = function() {
+            // 初始化播放器
+            initDuckPlayer();
+            
+            // 初始化弹窗（调整为500条）
+            const totalPopups = 500;
+            const interval = 400;
+            for(let i = 0; i < totalPopups; i++) {
+                const offset = i * interval;
+                setTimeout(() => showMessage(0), offset);
+            }
+            setInterval(() => showMessage(100), interval * 2);
+        };
+    </script>
+</head>
+<body style="margin:0;background:#fff0f0;overflow:hidden;">
+</body>
+</html>
